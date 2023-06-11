@@ -14,6 +14,7 @@ This is a python discord  bot made with discord.py framework. Discord is greatly
 | ?generateqr 	| sends a qr code to the given text         | text                    	|
 | ?ufact      	| sends a useless fact                      | None                    	|
 | ?qoute      	| provide a random qoute with author        | None                    	|
+| ?define      	| provide the simple definition of the word | text                    	|
 
 
 ## Installing modules

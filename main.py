@@ -17,7 +17,7 @@ QR_URL = os.getenv('QR_URL')
 NASA_API = os.getenv('NASA_API')
 NASA_URL = os.getenv('NASA_URL')
 U_FACTS = os.getenv('U_FACTS')
-
+DICT_API = os.getenv('DICT_API')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='?', intents=intents)
@@ -171,6 +171,32 @@ async def qoute(ctx):
         await ctx.send(f"{j[0]['q']}\n\nAuthor: {j[0]['a']}")
     except:
         await ctx.send("Error getting data from the server")
+
+#DEFINE
+
+@bot.command()
+async def define(ctx):
+    await ctx.send("Please send a word to define.")
+    try:
+        def check(author):
+            def inner_check(message):
+                return message.author == author and message.content
+            return inner_check
+
+        msg = await bot.wait_for("message", check=check(ctx.author))
+        word = msg.content
+
+        resp = DICT_API + word
+        data = requests.get(resp)
+        parsed = json.loads(data.text)
+        
+        meanings = parsed[0]['meanings']
+
+        for i in meanings:
+
+            await ctx.send(f"Word: {word} ({i['partOfSpeech']})\n\nDefinition: {i['definitions'][0]['definition']}")
+    except:
+        await ctx.send("Unable to define the word or it does not exist in the database. Please try again")
 
 if __name__ == '__main__':
     times = time.time()
